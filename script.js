@@ -23,104 +23,31 @@ document.querySelectorAll('.timeline-item').forEach(button => {
 });
 
 let audioCtx = null;
-let musicGain = null;
-let musicTimer = null;
-let musicStep = 0;
-let musicPlaying = false;
+const bgmAudio = document.querySelector('#bgm');
 const musicToggle = document.querySelector('#musicToggle');
 const musicToggleText = musicToggle.querySelector('.music-toggle__text');
 const musicControl = document.querySelector('#musicControl');
 const musicVolume = document.querySelector('#musicVolume');
-const musicLevels = [0.04,0.07,0.1,0.14,0.18];
-const chordProgression = [
-  [146.83,174.61,220.00],
-  [116.54,146.83,174.61],
-  [87.31,110.00,130.81],
-  [130.81,164.81,196.00]
-];
-const melodyProgression = [293.66,349.23,440.00,392.00,349.23,293.66,261.63,293.66];
-
-function ensureAudioContext(){
-  audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-  if (!musicGain) {
-    musicGain = audioCtx.createGain();
-    musicGain.gain.value = 0.0001;
-    musicGain.connect(audioCtx.destination);
-  }
-  return audioCtx;
-}
-
-function scheduleAmbientChord(){
-  if (!musicPlaying || !audioCtx || !musicGain) return;
-  const now = audioCtx.currentTime;
-  const notes = chordProgression[musicStep % chordProgression.length];
-  notes.forEach((frequency, index) => {
-    const oscillator = audioCtx.createOscillator();
-    const envelope = audioCtx.createGain();
-    oscillator.type = index === 1 ? 'sine' : 'triangle';
-    oscillator.frequency.value = frequency;
-    oscillator.detune.value = (index - 1) * 4;
-    envelope.gain.setValueAtTime(0.0001, now);
-    envelope.gain.exponentialRampToValueAtTime(index === 1 ? 0.18 : 0.1, now + 1.8);
-    envelope.gain.setValueAtTime(index === 1 ? 0.18 : 0.1, now + 4.5);
-    envelope.gain.exponentialRampToValueAtTime(0.0001, now + 6.8);
-    oscillator.connect(envelope); envelope.connect(musicGain);
-    oscillator.start(now); oscillator.stop(now + 7);
-  });
-  [0.8,2.35,3.9,5.25].forEach((offset, index) => {
-    const oscillator = audioCtx.createOscillator();
-    const envelope = audioCtx.createGain();
-    oscillator.type = 'triangle';
-    oscillator.frequency.value = melodyProgression[(musicStep * 2 + index) % melodyProgression.length];
-    envelope.gain.setValueAtTime(0.0001, now + offset);
-    envelope.gain.exponentialRampToValueAtTime(0.24, now + offset + 0.08);
-    envelope.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.9);
-    oscillator.connect(envelope); envelope.connect(musicGain);
-    oscillator.start(now + offset); oscillator.stop(now + offset + 1);
-  });
-  musicStep += 1;
-}
+const musicLevels = [0.2,0.4,0.6,0.8,1.0];
 
 function updateMusicControl(){
   musicControl.hidden = false;
-  musicToggle.classList.toggle('is-paused', !musicPlaying);
-  musicToggle.setAttribute('aria-pressed', String(musicPlaying));
-  musicToggle.setAttribute('aria-label', musicPlaying ? '暂停背景音乐' : '播放背景音乐');
-  musicToggleText.textContent = musicPlaying ? '音乐播放中' : '播放背景音乐';
+  const playing = !bgmAudio.paused;
+  musicToggle.classList.toggle('is-paused', !playing);
+  musicToggle.setAttribute('aria-pressed', String(playing));
+  musicToggle.setAttribute('aria-label', playing ? '暂停背景音乐' : '播放背景音乐');
+  musicToggleText.textContent = playing ? '音乐播放中' : '播放背景音乐';
 }
 
-async function startAmbientMusic(){
-  try{
-    ensureAudioContext();
-    await audioCtx.resume();
-    if (musicPlaying) return;
-    musicPlaying = true;
-    clearInterval(musicTimer);
-    const now = audioCtx.currentTime;
-    musicGain.gain.cancelScheduledValues(now);
-    musicGain.gain.setValueAtTime(Math.max(musicGain.gain.value, 0.0001), now);
-    const targetVolume = musicLevels[Number(musicVolume.value) - 1];
-    musicGain.gain.exponentialRampToValueAtTime(targetVolume, now + 1.1);
-    scheduleAmbientChord();
-    musicTimer = setInterval(scheduleAmbientChord, 6200);
+function startAmbientMusic(){
+  bgmAudio.play().then(() => {
     localStorage.setItem('redRadioMusic','on');
     updateMusicControl();
-  }catch(e){
-    musicPlaying = false;
-    updateMusicControl();
-  }
+  }).catch(() => updateMusicControl());
 }
 
 function pauseAmbientMusic(){
-  musicPlaying = false;
-  clearInterval(musicTimer);
-  musicTimer = null;
-  if (audioCtx && musicGain) {
-    const now = audioCtx.currentTime;
-    musicGain.gain.cancelScheduledValues(now);
-    musicGain.gain.setValueAtTime(Math.max(musicGain.gain.value, 0.0001), now);
-    musicGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
-  }
+  bgmAudio.pause();
   localStorage.setItem('redRadioMusic','off');
   updateMusicControl();
 }
@@ -132,16 +59,16 @@ document.querySelector('#receiveSignal').addEventListener('click', () => {
 });
 
 musicToggle.addEventListener('click', () => {
-  if (musicPlaying) pauseAmbientMusic();
-  else startAmbientMusic();
+  if (bgmAudio.paused) startAmbientMusic();
+  else pauseAmbientMusic();
 });
 
 musicVolume.addEventListener('input', () => {
-  if (!audioCtx || !musicGain || !musicPlaying) return;
-  const now = audioCtx.currentTime;
-  musicGain.gain.cancelScheduledValues(now);
-  musicGain.gain.setTargetAtTime(musicLevels[Number(musicVolume.value) - 1], now, 0.08);
+  bgmAudio.volume = musicLevels[Number(musicVolume.value) - 1];
 });
+
+bgmAudio.volume = musicLevels[Number(musicVolume.value) - 1];
+updateMusicControl();
 
 const frequency = document.querySelector('#frequency');
 const frequencyValue = document.querySelector('#frequencyValue');
