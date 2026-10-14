@@ -29,12 +29,16 @@ let musicStep = 0;
 let musicPlaying = false;
 const musicToggle = document.querySelector('#musicToggle');
 const musicToggleText = musicToggle.querySelector('.music-toggle__text');
+const musicControl = document.querySelector('#musicControl');
+const musicVolume = document.querySelector('#musicVolume');
+const musicLevels = [0.04,0.07,0.1,0.14,0.18];
 const chordProgression = [
   [146.83,174.61,220.00],
   [116.54,146.83,174.61],
   [87.31,110.00,130.81],
   [130.81,164.81,196.00]
 ];
+const melodyProgression = [293.66,349.23,440.00,392.00,349.23,293.66,261.63,293.66];
 
 function ensureAudioContext(){
   audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
@@ -63,11 +67,22 @@ function scheduleAmbientChord(){
     oscillator.connect(envelope); envelope.connect(musicGain);
     oscillator.start(now); oscillator.stop(now + 7);
   });
+  [0.8,2.35,3.9,5.25].forEach((offset, index) => {
+    const oscillator = audioCtx.createOscillator();
+    const envelope = audioCtx.createGain();
+    oscillator.type = 'triangle';
+    oscillator.frequency.value = melodyProgression[(musicStep * 2 + index) % melodyProgression.length];
+    envelope.gain.setValueAtTime(0.0001, now + offset);
+    envelope.gain.exponentialRampToValueAtTime(0.24, now + offset + 0.08);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.9);
+    oscillator.connect(envelope); envelope.connect(musicGain);
+    oscillator.start(now + offset); oscillator.stop(now + offset + 1);
+  });
   musicStep += 1;
 }
 
 function updateMusicControl(){
-  musicToggle.hidden = false;
+  musicControl.hidden = false;
   musicToggle.classList.toggle('is-paused', !musicPlaying);
   musicToggle.setAttribute('aria-pressed', String(musicPlaying));
   musicToggle.setAttribute('aria-label', musicPlaying ? '暂停背景音乐' : '播放背景音乐');
@@ -84,7 +99,8 @@ async function startAmbientMusic(){
     const now = audioCtx.currentTime;
     musicGain.gain.cancelScheduledValues(now);
     musicGain.gain.setValueAtTime(Math.max(musicGain.gain.value, 0.0001), now);
-    musicGain.gain.exponentialRampToValueAtTime(0.045, now + 1.4);
+    const targetVolume = musicLevels[Number(musicVolume.value) - 1];
+    musicGain.gain.exponentialRampToValueAtTime(targetVolume, now + 1.1);
     scheduleAmbientChord();
     musicTimer = setInterval(scheduleAmbientChord, 6200);
     localStorage.setItem('redRadioMusic','on');
@@ -118,6 +134,13 @@ document.querySelector('#receiveSignal').addEventListener('click', () => {
 musicToggle.addEventListener('click', () => {
   if (musicPlaying) pauseAmbientMusic();
   else startAmbientMusic();
+});
+
+musicVolume.addEventListener('input', () => {
+  if (!audioCtx || !musicGain || !musicPlaying) return;
+  const now = audioCtx.currentTime;
+  musicGain.gain.cancelScheduledValues(now);
+  musicGain.gain.setTargetAtTime(musicLevels[Number(musicVolume.value) - 1], now, 0.08);
 });
 
 const frequency = document.querySelector('#frequency');

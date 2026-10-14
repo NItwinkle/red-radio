@@ -206,8 +206,9 @@ footer strong{font-family:var(--font-display);letter-spacing:.1em}
 .copyright{font-size:12px;opacity:.7}
 
 /* ============ 背景音乐控制 ============ */
-.music-toggle{position:fixed;z-index:90;right:22px;bottom:calc(22px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;min-height:44px;padding:10px 15px;border:1px solid rgba(255,216,148,.55);border-radius:999px;background:rgba(80,12,10,.9);color:#fff2d5;box-shadow:0 10px 30px rgba(36,3,2,.3);font:500 13px var(--font-sans);letter-spacing:.04em;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform .2s ease,background .2s ease,opacity .2s ease}
-.music-toggle[hidden]{display:none}
+.music-control{position:fixed;z-index:90;right:22px;bottom:calc(22px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;padding:6px 12px 6px 6px;border:1px solid rgba(255,216,148,.55);border-radius:999px;background:rgba(80,12,10,.92);color:#fff2d5;box-shadow:0 10px 30px rgba(36,3,2,.3);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.music-control[hidden]{display:none}
+.music-toggle{display:flex;align-items:center;gap:9px;min-height:38px;padding:7px 10px;border:0;border-radius:999px;background:transparent;color:inherit;font:500 13px var(--font-sans);letter-spacing:.04em;cursor:pointer;transition:transform .2s ease,background .2s ease,opacity .2s ease}
 .music-toggle:hover{transform:translateY(-2px);background:rgba(112,17,13,.96)}
 .music-toggle:focus-visible{outline:2px solid #ffe1ab;outline-offset:3px}
 .music-toggle__icon{display:flex;align-items:flex-end;gap:2px;width:18px;height:17px}
@@ -216,6 +217,8 @@ footer strong{font-family:var(--font-display);letter-spacing:.1em}
 .music-toggle__icon i:nth-child(3){height:10px;animation-delay:-.65s}
 .music-toggle.is-paused{opacity:.82;background:rgba(42,31,27,.9)}
 .music-toggle.is-paused .music-toggle__icon i{height:3px;animation:none}
+.music-volume{display:flex;align-items:center;gap:7px;font:400 11px var(--font-sans);color:#f1d7ad}
+.music-volume input{width:64px;accent-color:#ffd58b;cursor:pointer}
 @keyframes musicBeat{to{height:16px}}
 
 /* ============ 致敬电波 overlay ============ */
@@ -268,7 +271,10 @@ footer strong{font-family:var(--font-display);letter-spacing:.1em}
   .quiz-panel{padding:30px 20px}
   .nav{padding:18px 20px}
   .flower.sent{transform:scale(1.05) rotate(12deg)}
-  .music-toggle{right:12px;bottom:calc(12px + env(safe-area-inset-bottom));padding:9px 12px}
+  .music-control{right:12px;bottom:calc(12px + env(safe-area-inset-bottom));gap:7px;padding-right:9px}
+  .music-toggle{padding:7px 8px}
+  .music-volume span{display:none}
+  .music-volume input{width:54px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
