@@ -205,6 +205,19 @@ footer p{margin:4px}
 footer strong{font-family:var(--font-display);letter-spacing:.1em}
 .copyright{font-size:12px;opacity:.7}
 
+/* ============ 背景音乐控制 ============ */
+.music-toggle{position:fixed;z-index:90;right:22px;bottom:calc(22px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:10px;min-height:44px;padding:10px 15px;border:1px solid rgba(255,216,148,.55);border-radius:999px;background:rgba(80,12,10,.9);color:#fff2d5;box-shadow:0 10px 30px rgba(36,3,2,.3);font:500 13px var(--font-sans);letter-spacing:.04em;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:transform .2s ease,background .2s ease,opacity .2s ease}
+.music-toggle[hidden]{display:none}
+.music-toggle:hover{transform:translateY(-2px);background:rgba(112,17,13,.96)}
+.music-toggle:focus-visible{outline:2px solid #ffe1ab;outline-offset:3px}
+.music-toggle__icon{display:flex;align-items:flex-end;gap:2px;width:18px;height:17px}
+.music-toggle__icon i{display:block;width:3px;height:7px;border-radius:2px;background:#ffd58b;animation:musicBeat .9s ease-in-out infinite alternate}
+.music-toggle__icon i:nth-child(2){height:14px;animation-delay:-.35s}
+.music-toggle__icon i:nth-child(3){height:10px;animation-delay:-.65s}
+.music-toggle.is-paused{opacity:.82;background:rgba(42,31,27,.9)}
+.music-toggle.is-paused .music-toggle__icon i{height:3px;animation:none}
+@keyframes musicBeat{to{height:16px}}
+
 /* ============ 致敬电波 overlay ============ */
 .signal-overlay{position:fixed;z-index:9999;inset:0;display:grid;place-items:center;overflow:hidden;background:rgba(56,8,6,.08);pointer-events:none;visibility:hidden;opacity:0}
 .signal-overlay.is-active{visibility:visible;animation:overlayFlash 2.2s ease both}
@@ -255,6 +268,7 @@ footer strong{font-family:var(--font-display);letter-spacing:.1em}
   .quiz-panel{padding:30px 20px}
   .nav{padding:18px 20px}
   .flower.sent{transform:scale(1.05) rotate(12deg)}
+  .music-toggle{right:12px;bottom:calc(12px + env(safe-area-inset-bottom));padding:9px 12px}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -266,6 +280,7 @@ footer strong{font-family:var(--font-display);letter-spacing:.1em}
   .signal-overlay.is-active .signal-overlay__beam,.signal-overlay.is-active .signal-overlay__rings i{animation:none}
   .signal-overlay.is-active .signal-overlay__message{animation:messageIn .8s ease both}
   .morse i{opacity:.6;transform:none;animation:none;box-shadow:none}
+  .music-toggle__icon i{animation:none}
 }
 
 /* ============ 深色阅读适配 ============ */
