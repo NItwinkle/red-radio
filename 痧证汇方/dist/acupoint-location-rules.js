@@ -3931,3 +3931,26 @@ window.ACUPUNCTURE_LOCATION_RULES = {
     "horizontal": "见标准原文横向解剖条件；需现场触诊确认"
   }
 };
+window.BONE_PROPORTIONAL_SEGMENTS = [
+  {start:'前发际正中',end:'后发际正中',total:12,axis:'纵向',use:'头部'},
+  {start:'眉间（印堂）',end:'前发际正中',total:3,axis:'纵向',use:'头面部'},
+  {start:'第7颈椎棘突下（大椎）',end:'后发际正中',total:3,axis:'纵向',use:'头面部'},
+  {start:'两额角发际（头维）',end:'两额角发际（头维）',total:9,axis:'横向',use:'头前部'},
+  {start:'耳后两乳突（完骨）',end:'耳后两乳突（完骨）',total:9,axis:'横向',use:'头后部'},
+  {start:'胸骨上窝（天突）',end:'剑突尖',total:9,axis:'纵向',use:'胸部任脉'},
+  {start:'剑突尖',end:'脐中',total:8,axis:'纵向',use:'上腹部'},
+  {start:'脐中',end:'耻骨联合上缘（曲骨）',total:5,axis:'纵向',use:'下腹部'},
+  {start:'两肩胛骨内侧缘',end:'两肩胛骨内侧缘',total:12,axis:'横向',use:'胸部'},
+  {start:'两乳头',end:'两乳头',total:8,axis:'横向',use:'胸腹部'},
+  {start:'肩胛骨内侧缘',end:'后正中线',total:3,axis:'横向',use:'背腰部'},
+  {start:'腋前纹头',end:'肘横纹（平尺骨鹰嘴）',total:9,axis:'纵向',use:'上臂前侧及内侧'},
+  {start:'腋后纹头',end:'尺骨鹰嘴（平肘横纹）',total:9,axis:'纵向',use:'上臂外侧及后侧'},
+  {start:'肘横纹',end:'腕掌（背）侧远端横纹',total:12,axis:'纵向',use:'前臂'},
+  {start:'耻骨联合上缘',end:'髌底',total:18,axis:'纵向',use:'大腿前部及内侧'},
+  {start:'髌底',end:'髌尖',total:2,axis:'纵向',use:'膝部'},
+  {start:'髌尖（平膝中）',end:'内踝尖',total:15,axis:'纵向',use:'小腿内侧'},
+  {start:'股骨大转子',end:'腘横纹（平髌尖）',total:19,axis:'纵向',use:'大腿前外侧'},
+  {start:'臀沟',end:'腘横纹',total:14,axis:'纵向',use:'大腿后部'},
+  {start:'腘横纹（平髌尖）',end:'外踝尖',total:16,axis:'纵向',use:'小腿外侧及后侧'},
+  {start:'内踝尖',end:'足底',total:3,axis:'纵向',use:'足内侧'}
+];
