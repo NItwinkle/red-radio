@@ -1,9 +1,9 @@
 /* 3D 穴位图谱：文字定位为准；模型标记按体表投影，仅供辨认区域。 */
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import * as THREE from './vendor/three/three.module.js';
+import { OrbitControls } from './vendor/three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from './vendor/three/addons/loaders/GLTFLoader.js';
 
-const MODEL_URL = 'models/human.glb';
+const MODEL_URL = new URL('./models/human.glb', import.meta.url).href;
 const HEIGHT = 1.7;
 const MERIDIAN_COLORS = [0xe79a72,0xe9bd63,0x85c6a6,0x72b3c3,0xaaa0d4,0xd693ad,0xb8c36f,0xe5a66f,0x6dbbaa,0x82a9d6,0xc59b79,0x9fc09a,0xd58c84,0xb4a4ca,0xc2b377];
 
