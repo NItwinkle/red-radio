@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="痧证汇方：按疾病名称检索，查看各分型症状与刮痧方案。">
+  <title>痧证汇方</title>
+  <link rel="stylesheet" href="styles.css?v=173">
+  <script type="importmap">
+    {"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#/" aria-label="返回痧证汇方首页">
+      <span class="brand-mark" aria-hidden="true">痧</span>
+      <span><strong>痧证汇方</strong></span>
+    </a>
+    <nav class="top-nav" aria-label="全站导航">
+      <a href="#/" data-nav="home">病症索引</a>
+      <a href="#/atlas" data-nav="atlas">穴位图谱</a>
+      <a href="#/glossary" data-nav="glossary">知识词典</a>
+      <a href="#/compare" data-nav="compare">方案对比 <span id="compareBadge" hidden></span></a>
+    </nav>
+    <div class="header-search">
+      <label class="sr-only" for="globalSearch">搜索疾病名称</label>
+      <input id="globalSearch" type="search" placeholder="搜索疾病名称…" autocomplete="off">
+      <span aria-hidden="true">⌕</span>
+    </div>
+  </header>
+  <main id="app" tabindex="-1"></main>
+  <footer class="site-footer"><p>© 痧证汇方 中医刮痧辨证知识库</p><p>本系统刮痧方案仅作中医养生知识学习参考，不能替代医师诊断与治疗。急重症请前往医疗机构就诊。</p></footer>
+  <dialog class="book-dialog" id="bookDialog" aria-labelledby="bookDialogTitle">
+    <div class="book-dialog-head"><h2 id="bookDialogTitle">按书籍筛选</h2><button class="book-dialog-close" id="closeBookFilter" type="button" aria-label="关闭书籍筛选">×</button></div>
+    <div class="book-options" id="bookOptions"></div>
+  </dialog>
+  <script src="data.js?v=170"></script>
+  <script src="point-names.js?v=170"></script>
+  <script src="standard-points.js?v=174"></script>
+  <script src="features.js?v=174"></script>
+  <script src="app.js?v=170"></script>
+  <script type="module" src="atlas3d.js?v=173"></script>
+</body>
+</html>
