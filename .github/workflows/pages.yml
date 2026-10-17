@@ -25,7 +25,7 @@ jobs:
       - name: Checkout published branch
         uses: actions/checkout@v4
         with:
-          ref: codex/shazheng-bone-proportion-demo
+          ref: gh-pages
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -33,7 +33,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '痧证汇方/dist'
+          path: '.'
 
       - name: Deploy
         id: deployment
