@@ -161,9 +161,12 @@ async function mount(canvas, data) {
       app.box = { min: box.min.clone(), size };
       app.model = m;
       res();
-    }, undefined, e => { console.error('模型加载失败', e); res(); });
+    }, undefined, e => { console.error('模型加载失败', e); app.modelError = e; res(); });
   });
-  if (!app.box) { dispose(); return; }
+  if (!app.box) {
+    canvas.insertAdjacentHTML('afterend', '<div class="atlas3d-fallback">人体模型加载失败；请检查模型资源或刷新页面。穴位目录与标准定位登记仍可使用。</div>');
+    return;
+  }
 
   // 穴位标记球 + 标签
   const geo = new THREE.SphereGeometry(0.009, 16, 16);
