@@ -203,8 +203,9 @@ window.SITE_FEATURES = (() => {
       '三阴交': {code:'SP6', segment:'内踝尖—阴陵泉', total:13, target:3, direction:'近心端', horizontal:'胫骨内侧缘后方；骨缘需现场触诊确认', status:'待人工复核', reason:'纵向比例可演示；骨缘条件未由模型确认。'}
     };
     const renderCunDemo = p => {
-      const r = cunRules[p.name];
+      const r = window.ACUPUNCTURE_LOCATION_RULES?.[p.name] || cunRules[p.name];
       if (!r) return '<section class="cun-demo cun-demo-empty"><h3>骨度分寸定位演示</h3><p>该穴尚未建立可核验的分寸规则。现有圆点仍是区域示意，不能作为标准精确定位。</p></section>';
+      if (!r.total || !r.target) return '<section class="cun-demo cun-demo-empty"><div class="cun-demo-head"><h3>骨度分寸定位登记 · '+escape(r.code)+'</h3><span class="review-badge">'+escape(r.status)+'</span></div><p>起止标志：'+escape(r.segment)+'。横向条件：'+escape(r.horizontal)+'。尚未完成标准文本与人体模型的逐穴复核，不显示为标准精确定位。</p></section>';
       const ticks = Array.from({length:r.total + 1}, (_, i) => '<i class="cun-tick '+(i === r.target ? 'target' : '')+'" style="left:'+(i/r.total*100)+'%"><b>'+(i === r.target ? '目标' : '')+'</b></i>').join('');
       return '<section class="cun-demo"><div class="cun-demo-head"><h3>骨度分寸定位演示 · '+escape(r.code)+'</h3><span class="review-badge">'+escape(r.status)+'</span></div><div class="cun-summary"><span>起止标志：'+escape(r.segment)+'</span><strong>区段总寸数：'+r.total+' 寸</strong><span>目标刻度：'+r.target+' 寸（'+escape(r.direction)+'）</span></div><div class="cun-ruler" aria-label="'+escape(r.segment)+' '+r.total+'寸刻度尺"><div class="cun-ruler-line">'+ticks+'</div><div class="cun-ruler-labels"><span>起点</span><span>终点</span></div></div><dl class="cun-conditions"><dt>横向解剖条件</dt><dd>'+escape(r.horizontal)+'</dd><dt>最终候选点</dt><dd class="candidate">'+escape(p.name)+'（'+escape(r.code)+'）· '+escape(r.status)+'</dd></dl><p class="cun-warning">'+escape(r.reason)+' 不显示为标准精确定位。</p><div class="cun-sides"><span>左侧计算：'+r.target+'/'+r.total+' 寸 → '+escape(r.status)+'</span><span>右侧计算：'+r.target+'/'+r.total+' 寸 → '+escape(r.status)+'</span></div></section>';
     };
